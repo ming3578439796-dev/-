@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(^_^) 我们的纪念日</title>
+    <style>
+        body { background: #fffaf0; font-family: sans-serif; text-align: center; padding: 20px; color: #555; }
+        .card { background: white; border-radius: 25px; padding: 25px; box-shadow: 0 8px 20px rgba(255, 182, 193, 0.3); border: 1px solid #ffe4e1; }
+        h2 { color: #ff8c94; margin-bottom: 5px; }
+        .sub-title { font-size: 12px; color: #aaa; margin-bottom: 20px; }
+        #days { font-size: 45px; font-weight: bold; color: #ff8c94; margin: 15px 0; border-bottom: 2px dashed #ffe4e1; display: inline-block; padding: 0 10px; }
+        .next-info { font-size: 14px; background: #fff0f5; padding: 8px; border-radius: 10px; display: inline-block; margin-top: 10px; }
+        textarea { width: 90%; height: 70px; border: 1px solid #ffd1dc; border-radius: 15px; padding: 10px; margin-top: 25px; outline: none; }
+        button { background: #ff8c94; color: white; border: none; padding: 12px 30px; border-radius: 25px; margin-top: 15px; font-weight: bold; }
+        #saved { color: #db7093; font-size: 13px; margin-top: 15px; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>( ^_^)❤(^_- )</h2>
+        <div class="sub-title">Started from 2025.09.24</div>
+        
+        <div>相恋已</div>
+        <div id="days">0 天</div>
+        
+        <div class="next-info">
+            距离周年纪念日还有: <span id="to-ann">--</span> 天 <br>
+            距离下一个百日还有: <span id="to-100">--</span> 天
+        </div>
+
+        <textarea id="note" placeholder="写下你想对 TA 说的话... (o^^o)"></textarea><br>
+        <button onclick="save()">保存心情 (≧▽≦)</button>
+        <p id="saved"></p>
+    </div>
+
+    <script>
+        const start = new Date('2025-09-24T00:00:00');
+        
+        function update() {
+            const now = new Date();
+            const diffTime = now - start;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('days').innerText = diffDays + ' 天';
+            
+            // 下一个百日
+            const next100Days = (Math.floor(diffDays / 100) + 1) * 100;
+            const next100Date = new Date(start);
+            next100Date.setDate(start.getDate() + next100Days);
+            document.getElementById('to-100').innerText = Math.ceil((next100Date - now)/(1000*60*60*24));
+
+            // 周年
+            let annYear = now.getFullYear();
+            if (now.getMonth() > 8 || (now.getMonth() === 8 && now.getDate() >= 24)) annYear++;
+            const annDate = new Date(annYear, 8, 24);
+            document.getElementById('to-ann').innerText = Math.ceil((annDate - now)/(1000*60*60*24));
+        }
+
+        function save() {
+            const text = document.getElementById('note').value;
+            if(text) {
+                localStorage.setItem('love_note_v2', text);
+                show();
+                alert('已记录下来啦！(＾Ｕ＾)ノ');
+            }
+        }
+
+        function show() {
+            const saved = localStorage.getItem('love_note_v2');
+            document.getElementById('saved').innerText = saved ? "最新寄语: " + saved : "";
+        }
+
+        update();
+        show();
+    </script>
+</body>
+</html>
+
